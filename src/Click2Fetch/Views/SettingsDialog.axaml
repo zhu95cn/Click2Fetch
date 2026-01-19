@@ -1,0 +1,337 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Click2Fetch.ViewModels"
+        xmlns:converters="using:Click2Fetch.Converters"
+        x:Class="Click2Fetch.Views.SettingsDialog"
+        x:DataType="vm:SettingsDialogViewModel"
+        Title="{Binding L_SettingsTitle}"
+        Icon="avares://Click2Fetch/icon.jpeg"
+        Width="480" Height="560"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{Binding DialogBg}"
+        RequestedThemeVariant="{Binding ActualThemeVariant}">
+
+    <Border Background="{Binding DialogCardBg}" 
+            CornerRadius="14" 
+            Margin="16"
+            Padding="24"
+            BorderBrush="{Binding DialogBorder}"
+            BorderThickness="1">
+        <Grid RowDefinitions="Auto,Auto,*,Auto">
+            <!-- Header -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding L_SettingsTitle}"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="{Binding DialogTextPrimary}"
+                       Margin="0,0,0,16"/>
+
+            <!-- Tab Headers -->
+            <Border Grid.Row="1" Background="{Binding DialogTabBg}" CornerRadius="8" Padding="4" Margin="0,0,0,16">
+                <Grid ColumnDefinitions="*,*,*">
+                    <!-- Selected indicators (Behind buttons) -->
+                    <Border Grid.Column="0"
+                            Background="{Binding DialogTabSelectedBg}"
+                            CornerRadius="6"
+                            IsHitTestVisible="False"
+                            IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=0}"/>
+                    <Border Grid.Column="1"
+                            Background="{Binding DialogTabSelectedBg}"
+                            CornerRadius="6"
+                            IsHitTestVisible="False"
+                            IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=1}"/>
+                    <Border Grid.Column="2"
+                            Background="{Binding DialogTabSelectedBg}"
+                            CornerRadius="6"
+                            IsHitTestVisible="False"
+                            IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=2}"/>
+
+                    <!-- Tab 0: 导入导出 -->
+                    <Button Grid.Column="0"
+                            Command="{Binding SelectTabCommand}"
+                            CommandParameter="0"
+                            Foreground="{Binding DialogTextPrimary}"
+                            CornerRadius="6"
+                            Padding="12,8"
+                            FontSize="12"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            BorderThickness="0">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Style>
+                        </Button.Styles>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="📤"/>
+                            <TextBlock Text="{Binding L_TabExport}"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- Tab 1: 备份设置 -->
+                    <Button Grid.Column="1"
+                            Command="{Binding SelectTabCommand}"
+                            CommandParameter="1"
+                            Foreground="{Binding DialogTextPrimary}"
+                            CornerRadius="6"
+                            Padding="12,8"
+                            FontSize="12"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            BorderThickness="0">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Style>
+                        </Button.Styles>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="💾"/>
+                            <TextBlock Text="{Binding L_TabBackup}"/>
+                        </StackPanel>
+                    </Button>
+                    <!-- Tab 2: 登录密码 -->
+                    <Button Grid.Column="2"
+                            Command="{Binding SelectTabCommand}"
+                            CommandParameter="2"
+                            Foreground="{Binding DialogTextPrimary}"
+                            CornerRadius="6"
+                            Padding="12,8"
+                            FontSize="12"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            BorderThickness="0">
+                        <Button.Styles>
+                            <Style Selector="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </Style>
+                            <Style Selector="Button:pointerover">
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Style>
+                        </Button.Styles>
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <TextBlock Text="🔐"/>
+                            <TextBlock Text="{Binding L_TabPassword}"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <!-- Tab Content -->
+            <Border Grid.Row="2" Background="{Binding DialogTabSelectedBg}" CornerRadius="8" Padding="16">
+                <Grid>
+                    <!-- Tab 0: 导入导出 -->
+                    <StackPanel IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=0}"
+                                Spacing="12">
+                        <TextBlock Text="{Binding L_DataExportTitle}"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Foreground="{Binding DialogTextPrimary}"/>
+                        <TextBlock Text="{Binding L_Developing}"
+                                   FontSize="12"
+                                   Foreground="{Binding DialogTextSecondary}"/>
+                    </StackPanel>
+
+                    <!-- Tab 1: 备份设置 -->
+                    <ScrollViewer IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=1}">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="{Binding L_AutoBackupTitle}"
+                                       FontSize="14"
+                                       FontWeight="Medium"
+                                       Foreground="{Binding DialogTextPrimary}"/>
+                            
+                            <!-- SMTP Server -->
+                            <Grid ColumnDefinitions="*,Auto">
+                                <StackPanel Grid.Column="0" Spacing="4">
+                                    <TextBlock Text="{Binding L_SmtpServer}" FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                    <TextBox Text="{Binding SmtpServer}"
+                                             Background="{Binding DialogInputBg}"
+                                             Foreground="{Binding DialogTextPrimary}"
+                                             BorderBrush="{Binding DialogBorder}"
+                                             CornerRadius="6"
+                                             Watermark="smtp.example.com"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Spacing="4" Width="80" Margin="8,0,0,0">
+                                    <TextBlock Text="{Binding L_SmtpPort}" FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                    <TextBox Text="{Binding SmtpPort}"
+                                             Background="{Binding DialogInputBg}"
+                                             Foreground="{Binding DialogTextPrimary}"
+                                             BorderBrush="{Binding DialogBorder}"
+                                             CornerRadius="6"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Send Email -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_SmtpEmail}" FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox Text="{Binding SmtpEmail}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"
+                                         Watermark="your@email.com"/>
+                            </StackPanel>
+
+                            <!-- Authorization Code -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_SmtpPassword}" FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox PasswordChar="•"
+                                         Text="{Binding SmtpPassword}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"/>
+                            </StackPanel>
+
+                            <!-- Target Email -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_BackupTargetEmail}" FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox Text="{Binding BackupTargetEmail}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"
+                                         Watermark="backup@email.com"/>
+                            </StackPanel>
+
+                            <!-- Message -->
+                            <TextBlock Text="{Binding BackupMessage}" 
+                                       Foreground="#EF4444" 
+                                       FontSize="12"
+                                       IsVisible="{Binding !BackupSuccess}"/>
+                            <TextBlock Text="{Binding BackupMessage}" 
+                                       Foreground="#10B981" 
+                                       FontSize="12"
+                                       IsVisible="{Binding BackupSuccess}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- Tab 2: 登录密码 -->
+                    <StackPanel IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=2}"
+                                Spacing="16">
+                        <TextBlock Text="{Binding L_ChangePwdTitle}"
+                                   FontSize="14"
+                                   FontWeight="Medium"
+                                   Foreground="{Binding DialogTextPrimary}"/>
+                        
+                        <StackPanel Spacing="12">
+                            <!-- Old Password -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_OldPassword}"
+                                           FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox PasswordChar="•" 
+                                         Text="{Binding CurrentPassword}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"/>
+                            </StackPanel>
+
+                            <!-- New Password -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_NewPassword}"
+                                           FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox PasswordChar="•" 
+                                         Text="{Binding NewPassword}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"/>
+                            </StackPanel>
+
+                            <!-- Confirm Password -->
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="{Binding L_ConfirmNewPassword}"
+                                           FontSize="12" Foreground="{Binding DialogTextSecondary}"/>
+                                <TextBox PasswordChar="•" 
+                                         Text="{Binding ConfirmNewPassword}"
+                                         Background="{Binding DialogInputBg}"
+                                         Foreground="{Binding DialogTextPrimary}"
+                                         BorderBrush="{Binding DialogBorder}"
+                                         CornerRadius="6"/>
+                            </StackPanel>
+
+                            <!-- Error/Success Message -->
+                            <TextBlock Text="{Binding PasswordErrorMessage}" 
+                                       Foreground="#EF4444" 
+                                       FontSize="12"
+                                       IsVisible="{Binding PasswordErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                            <TextBlock Text="{Binding L_PasswordSuccess}" 
+                                       Foreground="#10B981" 
+                                       FontSize="12"
+                                       IsVisible="{Binding PasswordSuccess}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Buttons -->
+            <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,16,0,0">
+                <Button Grid.Column="1"
+                        Content="{Binding L_Close}"
+                        Command="{Binding CancelCommand}"
+                        Background="{Binding DialogSecondaryButtonBg}"
+                        Foreground="{Binding DialogTextSecondary}"
+                        CornerRadius="10"
+                        Padding="24,10"
+                        Margin="0,0,8,0"
+                        BorderThickness="1"
+                        BorderBrush="{Binding DialogSecondaryButtonBorder}">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:SettingsDialogViewModel)DataContext).DialogButtonBg}"/>
+                            <Setter Property="BorderBrush" Value="{Binding $parent[Window].((vm:SettingsDialogViewModel)DataContext).DialogButtonBg}"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+                <!-- Password Tab Button -->
+                <Button Grid.Column="2"
+                        Content="{Binding L_UpdatePassword}"
+                        Command="{Binding ChangePasswordCommand}"
+                        IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=2}"
+                        Background="{Binding DialogButtonBg}"
+                        Foreground="#FFFFFF"
+                        CornerRadius="10"
+                        Padding="24,10"
+                        BorderThickness="0">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Opacity" Value="0.9"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+                <!-- Backup Tab Buttons -->
+                <Button Grid.Column="2"
+                        Content="{Binding L_SaveConfig}"
+                        Command="{Binding SaveEmailConfigCommand}"
+                        IsVisible="{Binding SelectedTabIndex, Converter={StaticResource IntEqualConverter}, ConverterParameter=1}"
+                        Background="{Binding DialogButtonBg}"
+                        Foreground="#FFFFFF"
+                        CornerRadius="10"
+                        Padding="24,10"
+                        BorderThickness="0">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Opacity" Value="0.9"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

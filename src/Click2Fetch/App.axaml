@@ -1,0 +1,55 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:Click2Fetch.Converters"
+             x:Class="Click2Fetch.App"
+             RequestedThemeVariant="Dark">
+    
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="avares://Click2Fetch/icon.jpeg" ToolTipText="Click2Fetch" Clicked="TrayIcon_Clicked">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="控制台" Click="ShowWindow_Click"/>
+                        <NativeMenuItemSeparator/>
+                        <NativeMenuItem Header="退出" Click="Exit_Click"/>
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+    
+    <Application.Resources>
+        <converters:TypeToIconConverter x:Key="TypeToIconConverter"/>
+        <converters:TypeToActionConverter x:Key="TypeToActionConverter"/>
+        <converters:TypeToUrlConverter x:Key="TypeToUrlConverter"/>
+        <converters:VisibilityIconConverter x:Key="VisibilityIconConverter"/>
+        <converters:SetupButtonTextConverter x:Key="SetupButtonTextConverter"/>
+        <converters:CopiedTextConverter x:Key="CopiedTextConverter"/>
+        <converters:CopiedColorConverter x:Key="CopiedColorConverter"/>
+        <converters:LangToggleConverter x:Key="LangToggleConverter"/>
+        <converters:LangColumnConverter x:Key="LangColumnConverter"/>
+        <converters:LangTextConverter x:Key="LangTextConverter"/>
+        <converters:ThemeNameConverter x:Key="ThemeNameConverter"/>
+        <!-- Theme Converters -->
+        <converters:ThemeBgConverter x:Key="ThemeBgConverter"/>
+        <converters:ThemeSidebarBgConverter x:Key="ThemeSidebarBgConverter"/>
+        <converters:ThemeCardBgConverter x:Key="ThemeCardBgConverter"/>
+        <converters:ThemeBorderConverter x:Key="ThemeBorderConverter"/>
+        <converters:ThemeTextPrimaryConverter x:Key="ThemeTextPrimaryConverter"/>
+        <converters:ThemeTextSecondaryConverter x:Key="ThemeTextSecondaryConverter"/>
+        <converters:ThemeAccentConverter x:Key="ThemeAccentConverter"/>
+        <converters:ThemeInputBgConverter x:Key="ThemeInputBgConverter"/>
+        <converters:ThemeSelectedItemBgConverter x:Key="ThemeSelectedItemBgConverter"/>
+        <converters:ThemeSelectedBorderConverter x:Key="ThemeSelectedBorderConverter"/>
+        <converters:ThemeColumnConverter x:Key="ThemeColumnConverter"/>
+        <converters:ThemeIconConverter x:Key="ThemeIconConverter"/>
+        <converters:ThemeTextShortConverter x:Key="ThemeTextShortConverter"/>
+        <converters:IntEqualConverter x:Key="IntEqualConverter"/>
+    </Application.Resources>
+    
+    <Application.Styles>
+        <FluentTheme/>
+        <StyleInclude Source="avares://Click2Fetch/Styles/Styles.axaml"/>
+        <StyleInclude Source="avares://Click2Fetch/Styles/LightStyles.axaml"/>
+    </Application.Styles>
+</Application>

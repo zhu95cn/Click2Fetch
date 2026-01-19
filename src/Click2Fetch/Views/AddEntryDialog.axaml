@@ -1,0 +1,110 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Click2Fetch.ViewModels"
+        x:Class="Click2Fetch.Views.AddEntryDialog"
+        x:DataType="vm:AddEntryDialogViewModel"
+        Title="{Binding L_Title}"
+        Icon="avares://Click2Fetch/icon.jpeg"
+        Width="420" Height="340"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{Binding DialogBg}"
+        RequestedThemeVariant="{Binding ActualThemeVariant}"
+        ExtendClientAreaToDecorationsHint="False">
+
+    <Border Background="{Binding DialogCardBg}" 
+            CornerRadius="12" 
+            Margin="16"
+            Padding="24"
+            BorderBrush="{Binding DialogBorder}"
+            BorderThickness="1">
+        <StackPanel Spacing="20">
+            <!-- Header -->
+            <TextBlock Text="{Binding L_Title}"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="{Binding DialogTextPrimary}"/>
+
+            <!-- Title Input -->
+            <StackPanel Spacing="6">
+                <TextBlock Text="{Binding L_TitleLabel}"
+                           FontSize="13"
+                           Foreground="{Binding DialogTextSecondary}"/>
+                <TextBox x:Name="TitleInput"
+                         Text="{Binding Title}"
+                         Watermark="{Binding L_TitlePlaceholder}"
+                         Background="{Binding DialogInputBg}"
+                         Foreground="{Binding DialogTextPrimary}"
+                         BorderBrush="{Binding DialogBorder}"
+                         CaretBrush="{Binding DialogCaretBrush}"
+                         CornerRadius="8"
+                         Padding="12,10"
+                         FontSize="14"/>
+            </StackPanel>
+
+            <!-- Notes Input -->
+            <StackPanel Spacing="6">
+                <TextBlock Text="{Binding L_NotesLabel}"
+                           FontSize="13"
+                           Foreground="{Binding DialogTextSecondary}"/>
+                <TextBox x:Name="NotesInput"
+                         Text="{Binding Notes}"
+                         Watermark="{Binding L_NotesPlaceholder}"
+                         Background="{Binding DialogInputBg}"
+                         Foreground="{Binding DialogTextPrimary}"
+                         BorderBrush="{Binding DialogBorder}"
+                         CaretBrush="{Binding DialogCaretBrush}"
+                         CornerRadius="8"
+                         Padding="12,10"
+                         FontSize="14"
+                         AcceptsReturn="False"/>
+            </StackPanel>
+
+            <!-- Buttons -->
+            <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,8,0,0">
+                <Button Grid.Column="1"
+                        Content="{Binding L_Cancel}"
+                        Command="{Binding CancelCommand}"
+                        Background="{Binding DialogSecondaryButtonBg}"
+                        Foreground="{Binding DialogTextSecondary}"
+                        CornerRadius="8"
+                        Padding="20,10"
+                        Margin="0,0,8,0"
+                        BorderThickness="1"
+                        BorderBrush="{Binding DialogSecondaryButtonBorder}">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:AddEntryDialogViewModel)DataContext).DialogButtonBg}"/>
+                            <Setter Property="BorderBrush" Value="{Binding $parent[Window].((vm:AddEntryDialogViewModel)DataContext).DialogButtonBg}"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+                <Button Grid.Column="2"
+                        x:Name="ConfirmButton"
+                        Content="{Binding L_Create}"
+                        Command="{Binding ConfirmCommand}"
+                        IsDefault="True"
+                        Background="{Binding DialogButtonBg}"
+                        Foreground="#FFFFFF"
+                        CornerRadius="8"
+                        Padding="20,10"
+                        BorderThickness="0">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover">
+                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:AddEntryDialogViewModel)DataContext).DialogButtonBg}"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
+                            <Setter Property="Opacity" Value="0.9"/>
+                        </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+            </Grid>
+        </StackPanel>
+    </Border>
+</Window>

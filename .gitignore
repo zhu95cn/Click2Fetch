@@ -1,0 +1,37 @@
+## 忽略 Visual Studio 的临时文件、编译结果和由流行插件生成的文件
+
+# 用户特定文件
+*.rsuser
+*.suo
+*.user
+*.userosscache
+
+# 生成结果
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]uild/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio 2015/2017 缓存/选项目录
+.vs/
+
+# MSTest 测试结果
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NuGet 包目录
+packages/
+
+# 项目引用文件
+*.pubxml
+
+## 自定义忽略规则
+# 忽略与.git同级的publish目录
+/publish/

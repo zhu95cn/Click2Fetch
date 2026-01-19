@@ -1,0 +1,262 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Global TextBox focus style to prevent background override -->
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
+    </Style>
+
+    <!-- Search TextBox Style -->
+    <Style Selector="TextBox.SearchBox">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="14,12"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="TextBox.SearchBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
+    </Style>
+    <Style Selector="TextBox.SearchBox:focus">
+        <Setter Property="BorderBrush" Value="#8B5CF6"/>
+    </Style>
+
+    <!-- Sidebar Item Selected Style -->
+    <Style Selector="Border.SidebarItemSelected">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#5B21B6" Offset="0"/>
+                    <GradientStop Color="#7C3AED" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="14"/>
+    </Style>
+
+    <!-- Purple Button Style -->
+    <Style Selector="Button.PurpleButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#7C3AED" Offset="0"/>
+                    <GradientStop Color="#8B5CF6" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.PurpleButton:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#8B5CF6" Offset="0"/>
+                    <GradientStop Color="#A78BFA" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style Selector="Button.PurpleButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <!-- Gray Button Style -->
+    <Style Selector="Button.GrayButton">
+        <Setter Property="Background" Value="#1C1C22"/>
+        <Setter Property="Foreground" Value="#9CA3AF"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#2D2D38"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.GrayButton:pointerover">
+        <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="Button.GrayButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <!-- Attribute Card Style -->
+    <Style Selector="Border.AttributeCard">
+        <Setter Property="Background" Value="#16161A"/>
+        <Setter Property="BorderBrush" Value="#252530"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="MinWidth" Value="165"/>
+        <Setter Property="MinHeight" Value="130"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Border.AttributeCard:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+    </Style>
+
+    <!-- Value Display Box -->
+    <Style Selector="Border.ValueBox">
+        <Setter Property="Background" Value="#1C1C22"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="14,10"/>
+    </Style>
+
+    <!-- Password Input Style -->
+    <Style Selector="TextBox.PasswordInput">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,14"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="PasswordChar" Value="•"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="TextBox.PasswordInput:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
+    </Style>
+    <Style Selector="TextBox.PasswordInput:focus">
+        <Setter Property="BorderBrush" Value="#8B5CF6"/>
+    </Style>
+
+    <!-- Description Input Style -->
+    <Style Selector="TextBox.DescInput">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="TextBox.DescInput:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
+    </Style>
+    <Style Selector="TextBox.DescInput:focus">
+        <Setter Property="BorderBrush" Value="#8B5CF6"/>
+    </Style>
+
+    <!-- Lock Screen Panel -->
+    <Style Selector="Border.LockPanel">
+        <Setter Property="Background" Value="#16161A"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="48"/>
+        <Setter Property="BorderBrush" Value="#252530"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <!-- Unlock Button Style -->
+    <Style Selector="Button.UnlockButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#7C3AED" Offset="0"/>
+                    <GradientStop Color="#8B5CF6" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="28,16"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.UnlockButton:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#8B5CF6" Offset="0"/>
+                    <GradientStop Color="#A78BFA" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style Selector="Button.UnlockButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.98)"/>
+    </Style>
+
+    <!-- Error Text Style -->
+    <Style Selector="TextBlock.ErrorText">
+        <Setter Property="Foreground" Value="#F87171"/>
+        <Setter Property="FontSize" Value="13"/>
+    </Style>
+
+    <!-- Sidebar Item Button -->
+    <Style Selector="Button.SidebarItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="14"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.SidebarItem:pointerover">
+        <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="Button.SidebarItem.Selected">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                    <GradientStop Color="#4C1D95" Offset="0"/>
+                    <GradientStop Color="#6D28D9" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

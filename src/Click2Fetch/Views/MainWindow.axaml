@@ -1,0 +1,672 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Click2Fetch.ViewModels"
+        xmlns:models="using:Click2Fetch.Models"
+        x:Class="Click2Fetch.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="{Binding L_AppTitle}"
+        Icon="avares://Click2Fetch/icon.jpeg"
+        Width="1200" Height="800"
+        MinWidth="900" MinHeight="600"
+        Background="{Binding ThemeBg}"
+        RequestedThemeVariant="{Binding ActualThemeVariant}"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid>
+        <!-- Lock Screen Overlay -->
+        <Border IsVisible="{Binding IsLocked}"
+                Background="{Binding ThemeBg}"
+                ZIndex="100">
+            <Grid RowDefinitions="*,Auto,*">
+                <Border Grid.Row="1"
+                        Classes.LockPanel="{Binding !IsLightTheme}"
+                        Classes.LockPanelLight="{Binding IsLightTheme}"
+                        Width="420"
+                        HorizontalAlignment="Center"
+                        Background="{Binding ThemeCardBg}"
+                        BorderBrush="{Binding ThemeBorder}">
+                    <StackPanel Spacing="24">
+                        <!-- Logo/Title -->
+                        <StackPanel HorizontalAlignment="Center" Spacing="8">
+                            <TextBlock Text="🔐" 
+                                       FontSize="48" 
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding L_AppTitle}" 
+                                       FontSize="28" 
+                                       FontWeight="Bold"
+                                       Foreground="{Binding ThemeTextPrimary}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding L_AppSubtitle}"
+                                       FontSize="14"
+                                       Foreground="{Binding ThemeTextSecondary}"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Setup Mode Title -->
+                        <TextBlock IsVisible="{Binding IsFirstTimeSetup}"
+                                   Text="{Binding L_CreatePwd}"
+                                   FontSize="16"
+                                   Foreground="{Binding ThemeTextSecondary}"
+                                   HorizontalAlignment="Center"/>
+
+                        <!-- Password Input -->
+                        <StackPanel Spacing="16">
+                            <TextBox Classes.PasswordInput="{Binding !IsLightTheme}"
+                                     Classes.PasswordInputLight="{Binding IsLightTheme}"
+                                     PasswordChar="•"
+                                     Text="{Binding MasterPassword}"
+                                     Watermark="{Binding L_MasterPwd}"
+                                     Background="{Binding ThemeInputBg}"
+                                     BorderBrush="{Binding ThemeBorder}"
+                                     Foreground="{Binding ThemeTextPrimary}"
+                                     CaretBrush="{Binding ThemeCaretBrush}"/>
+
+                            <TextBox Classes.PasswordInput="{Binding !IsLightTheme}"
+                                     Classes.PasswordInputLight="{Binding IsLightTheme}"
+                                     PasswordChar="•"
+                                     IsVisible="{Binding IsFirstTimeSetup}"
+                                     Text="{Binding ConfirmPassword}"
+                                     Watermark="{Binding L_ConfirmPwd}"
+                                     Background="{Binding ThemeInputBg}"
+                                     BorderBrush="{Binding ThemeBorder}"
+                                     Foreground="{Binding ThemeTextPrimary}"
+                                     CaretBrush="{Binding ThemeCaretBrush}"/>
+                        </StackPanel>
+
+                        <!-- Error Message -->
+                        <TextBlock Classes="ErrorText"
+                                   Text="{Binding ErrorMessage}"
+                                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                                   HorizontalAlignment="Center"/>
+
+                        <!-- Unlock Button -->
+                        <Button Classes.UnlockButton="{Binding !IsLightTheme}"
+                                Classes.UnlockButtonLight="{Binding IsLightTheme}"
+                                Command="{Binding UnlockCommand}"
+                                IsDefault="True"
+                                IsEnabled="{Binding !IsLoading}">
+                            <TextBlock Text="{Binding UnlockButtonText}"
+                                       VerticalAlignment="Center"/>
+                        </Button>
+
+                        <!-- Password Requirements (Setup Mode) -->
+                        <TextBlock IsVisible="{Binding IsFirstTimeSetup}"
+                                   Text="{Binding L_PwdHint}"
+                                   FontSize="12"
+                                   Foreground="{Binding ThemeTextSecondary}"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content -->
+        <Grid ColumnDefinitions="280,Auto,*" IsVisible="{Binding !IsLocked}">
+            <!-- Left Sidebar -->
+            <Border Grid.Column="0" Background="{Binding ThemeSidebarBg}" Padding="20">
+                <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+                    <!-- Title -->
+                    <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,24">
+                        <TextBlock Text="{Binding L_AppTitle}"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="{Binding ThemeAccent}"/>
+                        <TextBlock Text="{Binding L_AppSubtitle}"
+                                   FontSize="12"
+                                   Foreground="{Binding ThemeTextSecondary}"/>
+                    </StackPanel>
+
+                    <!-- Search Bar -->
+                    <Border Grid.Row="1" Margin="0,0,0,20">
+                        <Grid>
+                            <TextBox Classes="SearchBox"
+                                     Text="{Binding SearchQuery}"
+                                     Watermark="{Binding L_SearchPlaceholder}"
+                                     Padding="36,10,12,10"
+                                     Background="{Binding ThemeInputBg}"
+                                     BorderBrush="{Binding ThemeBorder}"
+                                     Foreground="{Binding ThemeTextPrimary}"
+                                     CaretBrush="{Binding ThemeCaretBrush}"/>
+                            <TextBlock Text="🔍" 
+                                       FontSize="14"
+                                       Foreground="{Binding ThemeTextSecondary}"
+                                       VerticalAlignment="Center"
+                                       Margin="12,0,0,0"
+                                       IsHitTestVisible="False"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Section Title -->
+                    <TextBlock Grid.Row="2" 
+                               Text="{Binding L_MyCredentials}"
+                               FontSize="12"
+                               Foreground="{Binding ThemeTextSecondary}"
+                               Margin="0,0,0,12"/>
+
+                    <!-- Items List -->
+                    <ScrollViewer Grid.Row="3">
+                        <ItemsControl ItemsSource="{Binding Items}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:ItemViewModel">
+                                    <Button Margin="0,0,0,8"
+                                            Padding="12"
+                                            CornerRadius="12"
+                                            BorderThickness="0"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Stretch"
+                                            Command="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).SelectItemCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Styles>
+                                            <Style Selector="Button">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                            </Style>
+                                            <Style Selector="Button:pointerover">
+                                                <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                            </Style>
+                                        </Button.Styles>
+                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                            <Border Grid.Column="0"
+                                                    Width="40" Height="40"
+                                                    CornerRadius="10"
+                                                    Margin="0,0,12,0"
+                                                    VerticalAlignment="Center"
+                                                    Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}">
+                                                <TextBlock Text="📁"
+                                                           FontSize="18"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}"
+                                                           FontSize="14"
+                                                           Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextPrimary}"
+                                                           FontWeight="Medium"/>
+                                                <TextBlock Text="{Binding Notes}"
+                                                           FontSize="12"
+                                                           Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"
+                                                           MaxLines="1"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                            </StackPanel>
+                                            <Ellipse Grid.Column="2"
+                                                     Width="8" Height="8"
+                                                     Fill="#3B82F6"
+                                                     VerticalAlignment="Center"
+                                                     IsVisible="{Binding $parent[ItemsControl].((vm:MainWindowViewModel)DataContext).SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Bottom Actions -->
+                    <StackPanel Grid.Row="4" Spacing="8" Margin="0,16,0,0">
+                        <Button HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                Command="{Binding AddNewItemCommand}"
+                                Background="{Binding ThemePrimaryButtonBg}"
+                                Foreground="#FFFFFF"
+                                CornerRadius="10"
+                                Padding="18,12"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                Cursor="Hand">
+                            <Button.Styles>
+                                <Style Selector="Button:pointerover">
+                                    <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemePrimaryButtonHoverBg}"/>
+                                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                                </Style>
+                                <Style Selector="Button:pressed">
+                                    <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemePrimaryButtonBg}"/>
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                </Style>
+                            </Button.Styles>
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <TextBlock Text="+" FontSize="16" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding L_AddNew}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Grid ColumnDefinitions="*,8,*">
+                            <Button Grid.Column="0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Command="{Binding OpenSettingsCommand}"
+                                    Background="{Binding ThemeSecondaryButtonBg}"
+                                    Foreground="{Binding ThemeSecondaryButtonText}"
+                                    CornerRadius="10"
+                                    Padding="12,12"
+                                    FontSize="14"
+                                    BorderThickness="1"
+                                    BorderBrush="{Binding ThemeSecondaryButtonBorder}"
+                                    Cursor="Hand">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeSecondaryButtonHoverBg}"/>
+                                        <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                    </Style>
+                                    <Style Selector="Button:pressed">
+                                        <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeSecondaryButtonBg}"/>
+                                        <Setter Property="Opacity" Value="0.8"/>
+                                    </Style>
+                                </Button.Styles>
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <TextBlock Text="⚙️" FontSize="14"/>
+                                    <TextBlock Text="{Binding L_Settings}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Grid.Column="2"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Center"
+                                    Command="{Binding LockCommand}"
+                                    Background="{Binding ThemeSecondaryButtonBg}"
+                                    Foreground="{Binding ThemeSecondaryButtonText}"
+                                    CornerRadius="10"
+                                    Padding="12,12"
+                                    FontSize="14"
+                                    BorderThickness="1"
+                                    BorderBrush="{Binding ThemeSecondaryButtonBorder}"
+                                    Cursor="Hand">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeSecondaryButtonHoverBg}"/>
+                                        <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        <Setter Property="BorderBrush" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                    </Style>
+                                    <Style Selector="Button:pressed">
+                                        <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeSecondaryButtonBg}"/>
+                                        <Setter Property="Opacity" Value="0.8"/>
+                                    </Style>
+                                </Button.Styles>
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <TextBlock Text="🔒" FontSize="14"/>
+                                    <TextBlock Text="{Binding L_Lock}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <!-- Theme Toggle -->
+                        <Border Background="{Binding ThemeLangToggleBg}" 
+                                CornerRadius="10" 
+                                Padding="4"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="{Binding ThemeBorder}"
+                                BorderThickness="1">
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Grid.Column="0"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="8,6"
+                                        CornerRadius="6"
+                                        BorderThickness="0"
+                                        FontSize="12"
+                                        FontWeight="Medium"
+                                        Command="{Binding ToggleThemeCommand}">
+                                    <Button.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"/>
+                                        </Style>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="☀️" FontSize="10"/>
+                                        <TextBlock Text="{Binding L_LightShort}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="8,6"
+                                        CornerRadius="6"
+                                        BorderThickness="0"
+                                        FontSize="12"
+                                        FontWeight="Medium"
+                                        Command="{Binding ToggleThemeCommand}">
+                                    <Button.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"/>
+                                        </Style>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <TextBlock Text="🌙" FontSize="10"/>
+                                        <TextBlock Text="{Binding L_DarkShort}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                                <!-- Active indicator -->
+                                <Border Grid.Column="{Binding IsLightTheme, Converter={StaticResource ThemeColumnConverter}}"
+                                        Background="{Binding ThemeAccent}"
+                                        CornerRadius="6"
+                                        IsHitTestVisible="False">
+                                    <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding IsLightTheme, Converter={StaticResource ThemeIconConverter}}" FontSize="10"/>
+                                        <TextBlock Text="{Binding L_ThemeShort}"
+                                                   Foreground="#FFFFFF"
+                                                   FontSize="12"
+                                                   FontWeight="Medium"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <!-- Language Toggle -->
+                        <Border Background="{Binding ThemeLangToggleBg}" 
+                                CornerRadius="10" 
+                                Padding="4"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="{Binding ThemeBorder}"
+                                BorderThickness="1">
+                            <Grid ColumnDefinitions="*,*">
+                                <Button Grid.Column="0"
+                                        Content="EN"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="8,6"
+                                        CornerRadius="6"
+                                        BorderThickness="0"
+                                        FontSize="12"
+                                        FontWeight="Medium"
+                                        Command="{Binding ToggleLanguageCommand}">
+                                    <Button.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"/>
+                                        </Style>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                                <Button Grid.Column="1"
+                                        Content="中文"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Center"
+                                        Padding="8,6"
+                                        CornerRadius="6"
+                                        BorderThickness="0"
+                                        FontSize="12"
+                                        FontWeight="Medium"
+                                        Command="{Binding ToggleLanguageCommand}">
+                                    <Button.Styles>
+                                        <Style Selector="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"/>
+                                        </Style>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                </Button>
+                                <!-- Active indicator -->
+                                <Border Grid.Column="{Binding IsEnglish, Converter={StaticResource LangColumnConverter}}"
+                                        Background="{Binding ThemeAccent}"
+                                        CornerRadius="6"
+                                        IsHitTestVisible="False">
+                                    <TextBlock Text="{Binding IsEnglish, Converter={StaticResource LangTextConverter}}"
+                                               Foreground="#FFFFFF"
+                                               FontSize="12"
+                                               FontWeight="Medium"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Resizable Splitter -->
+            <GridSplitter Grid.Column="1"
+                          Width="1"
+                          Background="{Binding ThemeBorder}"
+                          ResizeDirection="Columns"
+                          ResizeBehavior="PreviousAndNext"/>
+
+            <!-- Right Content Area -->
+            <Border Grid.Column="2" Background="{Binding ThemeBg}" Padding="40">
+                <Grid>
+                    <Grid RowDefinitions="Auto,Auto,Auto,*" IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <!-- Header: Title and Actions -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                            <StackPanel Grid.Column="0">
+                                <TextBox Text="{Binding SelectedItem.Title}"
+                                         FontSize="28"
+                                         FontWeight="Bold"
+                                         Foreground="{Binding ThemeTextPrimary}"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Watermark="凭证标题"/>
+                                <TextBlock Text="{Binding L_ManageDetail}"
+                                           FontSize="14"
+                                           Foreground="{Binding ThemeTextSecondary}"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" 
+                                        Orientation="Horizontal" 
+                                        Spacing="8">
+                                <Button Command="{Binding SaveCurrentItemCommand}"
+                                        Background="{Binding ThemePrimaryButtonBg}"
+                                        Foreground="#FFFFFF"
+                                        CornerRadius="10"
+                                        Padding="18,12"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        BorderThickness="0"
+                                        Cursor="Hand">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemePrimaryButtonHoverBg}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="💾" FontSize="14"/>
+                                        <TextBlock Text="{Binding L_Save}"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding DeleteCurrentItemCommand}"
+                                        Background="{Binding ThemeSecondaryButtonBg}"
+                                        Foreground="{Binding ThemeSecondaryButtonText}"
+                                        CornerRadius="10"
+                                        Padding="18,12"
+                                        FontSize="14"
+                                        BorderThickness="1"
+                                        BorderBrush="{Binding ThemeSecondaryButtonBorder}"
+                                        Cursor="Hand">
+                                    <Button.Styles>
+                                        <Style Selector="Button:pointerover">
+                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeSecondaryButtonHoverBg}"/>
+                                            <Setter Property="Foreground" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                            <Setter Property="BorderBrush" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                        </Style>
+                                    </Button.Styles>
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="🗑️" FontSize="14"/>
+                                        <TextBlock Text="{Binding L_Delete}"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Description Section -->
+                        <StackPanel Grid.Row="1" Spacing="8" Margin="0,24,0,0">
+                            <TextBlock Text="{Binding L_Description}"
+                                       FontSize="14"
+                                       Foreground="{Binding ThemeTextSecondary}"/>
+                            <TextBox Classes="DescInput"
+                                     Text="{Binding SelectedItem.Notes}"
+                                     Watermark="{Binding L_DescPlaceholder}"
+                                     AcceptsReturn="False"
+                                     Background="{Binding ThemeInputBg}"
+                                     BorderBrush="{Binding ThemeBorder}"
+                                     Foreground="{Binding ThemeTextPrimary}"
+                                     CaretBrush="{Binding ThemeCaretBrush}"/>
+                        </StackPanel>
+
+                        <!-- Attributes Section Header -->
+                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,32,0,16">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding L_Attributes}"
+                                           FontSize="18"
+                                           FontWeight="SemiBold"
+                                           Foreground="{Binding ThemeTextPrimary}"/>
+                                <TextBlock Text="{Binding L_AttrSubtitle}"
+                                           FontSize="13"
+                                           Foreground="{Binding ThemeTextSecondary}"
+                                           Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <Button Grid.Column="1"
+                                    Command="{Binding AddAttributeCommand}"
+                                    Background="{Binding ThemePrimaryButtonBg}"
+                                    Foreground="#FFFFFF"
+                                    CornerRadius="10"
+                                    Padding="18,12"
+                                    FontSize="14"
+                                    FontWeight="SemiBold"
+                                    BorderThickness="0"
+                                    Cursor="Hand">
+                                <Button.Styles>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemePrimaryButtonHoverBg}"/>
+                                        <Setter Property="Foreground" Value="#FFFFFF"/>
+                                    </Style>
+                                </Button.Styles>
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <TextBlock Text="+" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding L_AddAttr}"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <!-- Attribute Cards -->
+                        <ScrollViewer Grid.Row="3" 
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding SelectedItem.Attributes}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="vm:AttributeViewModel">
+                                        <Border Classes="AttributeCard"
+                                                Margin="0,0,12,12"
+                                                Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeCardBg}"
+                                                BorderBrush="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeBorder}">
+                                            <Grid RowDefinitions="*,Auto">
+                                                <!-- Clickable Top Area -->
+                                                <Button Grid.Row="0"
+                                                        Background="Transparent"
+                                                        BorderThickness="0"
+                                                        HorizontalAlignment="Stretch"
+                                                        VerticalAlignment="Stretch"
+                                                        HorizontalContentAlignment="Center"
+                                                        Padding="0"
+                                                        Command="{Binding CopyOrOpenCommand}">
+                                                    <Button.Styles>
+                                                        <Style Selector="Button:pointerover">
+                                                            <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                                        </Style>
+                                                    </Button.Styles>
+                                                    <StackPanel Spacing="8" Margin="16,16,16,10">
+                                                        <!-- Icon -->
+                                                        <TextBlock Text="{Binding Type, Converter={StaticResource TypeToIconConverter}}"
+                                                                   FontSize="24"
+                                                                   Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"
+                                                                   HorizontalAlignment="Center"/>
+                                                        
+                                                        <!-- Attribute Name -->
+                                                        <TextBlock Text="{Binding Key}"
+                                                                   FontSize="14"
+                                                                   FontWeight="Medium"
+                                                                   Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextPrimary}"
+                                                                   HorizontalAlignment="Center"/>
+                                                        
+                                                        <!-- Copy Hint -->
+                                                        <StackPanel Orientation="Horizontal" Spacing="4" HorizontalAlignment="Center">
+                                                            <TextBlock Text="📋" FontSize="11" IsVisible="{Binding !IsCopied}"/>
+                                                            <TextBlock Text="{Binding ActionHint}"
+                                                                       FontSize="11"
+                                                                       Foreground="{Binding IsCopied, Converter={StaticResource CopiedColorConverter}}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Button>
+                                                
+                                                <!-- Edit/Delete Buttons -->
+                                                <Border Grid.Row="1" 
+                                                        BorderBrush="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeBorder}" 
+                                                        BorderThickness="0,1,0,0"
+                                                        Padding="0,8,0,0">
+                                                    <Grid ColumnDefinitions="*,Auto,*">
+                                                        <Button Grid.Column="0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                HorizontalAlignment="Center"
+                                                                Padding="4,2"
+                                                                Command="{Binding EditCommand}">
+                                                            <Button.Styles>
+                                                                <Style Selector="Button:pointerover">
+                                                                    <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                                                </Style>
+                                                            </Button.Styles>
+                                                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                                                <TextBlock Text="✏️" FontSize="10"/>
+                                                                <TextBlock Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L_Edit}" FontSize="11" Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeAccent}"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                        <Border Grid.Column="1" 
+                                                                Width="1" 
+                                                                Background="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeBorder}"
+                                                                VerticalAlignment="Stretch"/>
+                                                        <Button Grid.Column="2"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                HorizontalAlignment="Center"
+                                                                Padding="4,2"
+                                                                Command="{Binding DeleteCommand}">
+                                                            <Button.Styles>
+                                                                <Style Selector="Button:pointerover">
+                                                                    <Setter Property="Background" Value="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeHoverBg}"/>
+                                                                </Style>
+                                                            </Button.Styles>
+                                                            <StackPanel Orientation="Horizontal" Spacing="3">
+                                                                <TextBlock Text="🗑️" FontSize="10"/>
+                                                                <TextBlock Text="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).L_Delete}" FontSize="11" Foreground="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ThemeTextSecondary}"/>
+                                                            </StackPanel>
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+
+                    <!-- Empty State -->
+                    <StackPanel IsVisible="{Binding SelectedItem, Converter={x:Static ObjectConverters.IsNull}}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Spacing="12">
+                        <TextBlock Text="📋" FontSize="64" HorizontalAlignment="Center" Opacity="0.5"/>
+                        <TextBlock Text="{Binding L_SelectOne}" FontSize="18" Foreground="{Binding ThemeTextSecondary}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

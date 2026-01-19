@@ -1,0 +1,137 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Light Theme Styles -->
+    
+    <!-- Search TextBox Style - Light -->
+    <Style Selector="TextBox.SearchBoxLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="#1F2937"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="14,12"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style Selector="TextBox.SearchBoxLight:focus">
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+    </Style>
+
+    <!-- Purple Button Style - Light (Blue accent) -->
+    <Style Selector="Button.BlueButton">
+        <Setter Property="Background" Value="#3B82F6"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="Button.BlueButton:pointerover">
+        <Setter Property="Background" Value="#2563EB"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+    </Style>
+
+    <!-- Gray Button Style - Light -->
+    <Style Selector="Button.GrayButtonLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="#6B7280"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,12"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style Selector="Button.GrayButtonLight:pointerover">
+        <Setter Property="Background" Value="#F3F4F6"/>
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+        <Setter Property="Foreground" Value="#3B82F6"/>
+    </Style>
+
+    <!-- Attribute Card Style - Light -->
+    <Style Selector="Border.AttributeCardLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="MinWidth" Value="165"/>
+        <Setter Property="MinHeight" Value="130"/>
+    </Style>
+    <Style Selector="Border.AttributeCardLight:pointerover">
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+    </Style>
+
+    <!-- Description Input Style - Light -->
+    <Style Selector="TextBox.DescInputLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="#1F2937"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="16,14"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+    <Style Selector="TextBox.DescInputLight:focus">
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+    </Style>
+
+    <!-- Lock Screen Panel - Light -->
+    <Style Selector="Border.LockPanelLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="48"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <!-- Password Input Style - Light -->
+    <Style Selector="TextBox.PasswordInputLight">
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Foreground" Value="#1F2937"/>
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="18,14"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="PasswordChar" Value="•"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="TextBox.PasswordInputLight:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{TemplateBinding Background}"/>
+    </Style>
+    <Style Selector="TextBox.PasswordInputLight:focus">
+        <Setter Property="BorderBrush" Value="#3B82F6"/>
+    </Style>
+
+    <!-- Unlock Button Style - Light -->
+    <Style Selector="Button.UnlockButtonLight">
+        <Setter Property="Background" Value="#3B82F6"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Padding" Value="28,16"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransform" Value="scale(1)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.UnlockButtonLight:pointerover">
+        <Setter Property="Background" Value="#2563EB"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+    </Style>
+</Styles>
